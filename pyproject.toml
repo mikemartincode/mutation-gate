@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mutation-gate"
+version = "0.1.0"
+description = "Diff-scoped mutation-testing pre-commit gate: changed complex functions must be mutation-clean or the commit is blocked."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Mike Martin" }]
+keywords = ["mutation-testing", "pre-commit", "mutmut", "radon", "git-hooks", "testing"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Testing",
+]
+
+# No hard dependencies: the gate itself is stdlib-only. It shells out to
+# `radon` and `mutmut`, which are RUNTIME REQUIREMENTS of the host repo's
+# environment (they run against the host's code and tests, not this package).
+dependencies = []
+
+[project.optional-dependencies]
+# Convenience extra for hosts that want the runtime tools installed alongside.
+tools = ["radon>=6", "mutmut>=3.0"]
+dev = ["pytest>=8"]
+
+[project.scripts]
+mutation-gate = "mutation_gate.gate:cli"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

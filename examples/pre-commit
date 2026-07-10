@@ -1,0 +1,26 @@
+#!/bin/sh
+# Pre-commit wiring for mutation-gate (diff-scoped mutation testing).
+#
+# Drop this into .git/hooks/pre-commit, or call it from your existing hook /
+# hook manager. The gate exits 0 fast when the staged diff touches no complex
+# function, so it belongs in the hot path of every commit.
+#
+# The gate resolves `radon` and `mutmut` from PATH; if your hook environment
+# doesn't activate the project venv, point the env overrides at it:
+#   export MUTATION_GATE_RADON="$REPO/.venv/bin/radon"
+#   export MUTATION_GATE_MUTMUT="$REPO/.venv/bin/mutmut"
+
+set -u
+
+# ── Mutation gate (diff-scoped, parallel) ───────────────────────────
+# Auto-mutmut the staged diff and FAIL the commit if a complex changed
+# function isn't tested + mutation-clean; module-level changes fall back
+# to whole-file blast radius.
+echo "[mutation-gate] diff-scoped mutmut on complex changed functions"
+if ! MUT_OUT=$(python -m mutation_gate 2>&1); then
+  printf '%s\n' "$MUT_OUT" >&2
+  echo "[mutation-gate] BLOCKED — add tests that kill the mutants (deliberate override: git commit --no-verify)" >&2
+  exit 1
+fi
+# Success is quiet: one summary line.
+printf '%s\n' "$MUT_OUT" | tail -1 >&2

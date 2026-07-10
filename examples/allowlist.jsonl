@@ -1,0 +1,2 @@
+{"function": "parse_window", "mutation_sha": "3f6c2a9b8d1e4f70", "reason": "mutant swaps `>=` for `>` on a bound that is never hit exactly: the cursor is advanced past the boundary two lines earlier, so both operators select the same branch on every reachable input"}
+{"function": "merge_spans", "mutation_sha": "a1b2c3d4e5f60718", "reason": "mutant changes the loop accumulator's initial value from [] to None; the first iteration unconditionally reassigns it before any read, so no observable behaviour changes"}
