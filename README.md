@@ -1,5 +1,7 @@
 # mutation-gate
 
+[![ci](https://github.com/mikemartincode/mutation-gate/actions/workflows/ci.yml/badge.svg)](https://github.com/mikemartincode/mutation-gate/actions/workflows/ci.yml)
+
 A diff-scoped mutation-testing pre-commit gate for Python. When a commit
 changes a complex function, the gate mutates that function's file, runs the
 tests, and **blocks the commit** if any mutant survives or the function has no

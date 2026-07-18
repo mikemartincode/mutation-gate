@@ -36,6 +36,10 @@ dev = ["pytest>=8"]
 [project.scripts]
 mutation-gate = "mutation_gate.gate:cli"
 
+[project.urls]
+Homepage = "https://github.com/mikemartincode/mutation-gate"
+Repository = "https://github.com/mikemartincode/mutation-gate"
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
